@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Answer</title>
+	<link rel="stylesheet" type="text/css" href="answer.css">
+  <link href= "https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+  
+</head>
+<body>
+<nav class="navbar navbar-expand-custom navbar-mainbg" >
+       
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-home"></i>Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="updates.html"><i class="far fa-edit"></i>Updates</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="domain.html"><i class="far fa-clone"></i>Practice</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-map-signs"></i>Roadmaps</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+<span></span>
+<!--end of navigation bar-->
+<div class="record">
+<h1>Record Your Answer</h1>
+<form>    
+    <input type="textarea" rows="4" cols="50" name="name" class="question" id="speechToText" placeholder="Speak Something" onclick="record()" > 
+<script type="text/javascript">
+
+  if ("webkitSpeechRecognition" in window) {
+  // Initialize webkitSpeechRecognition
+  let speechRecognition = new webkitSpeechRecognition();
+
+  // String for the Final Transcript
+  let final_transcript = "";
+
+  // Set the properties for the Speech Recognition object
+  speechRecognition.continuous = true;
+  speechRecognition.interimResults = true;
+  speechRecognition.lang = document.querySelector("#select_dialect").value;
+
+  // Callback Function for the onStart Event
+  speechRecognition.onstart = () => {
+    // Show the Status Element
+    document.querySelector("#status").style.display = "block";
+  };
+  speechRecognition.onerror = () => {
+    // Hide the Status Element
+    document.querySelector("#status").style.display = "none";
+  };
+  speechRecognition.onend = () => {
+    // Hide the Status Element
+    document.querySelector("#status").style.display = "none";
+  };
+
+  speechRecognition.onresult = (event) => {
+    // Create the interim transcript string locally because we don't want it to persist like final transcript
+    let interim_transcript = "";
+
+    // Loop through the results from the speech recognition object.
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      // If the result item is Final, add it to Final Transcript, Else add it to Interim transcript
+      if (event.results[i].isFinal) {
+        final_transcript += event.results[i][0].transcript;
+      } else {
+        interim_transcript += event.results[i][0].transcript;
+      }
+    }
+
+    // Set the Final transcript and Interim transcript.
+    document.querySelector("#final").innerHTML = final_transcript;
+    document.querySelector("#interim").innerHTML = interim_transcript;
+  };
+
+  // Set the onClick property of the start button
+  document.querySelector("#start").onclick = () => {
+    // Start the Speech Recognition
+    speechRecognition.start();
+  };
+  // Set the onClick property of the stop button
+  document.querySelector("#stop").onclick = () => {
+    // Stop the Speech Recognition
+    speechRecognition.stop();
+  };
+} else {
+  console.log("Speech Recognition Not Available");
+}
+</script>
+
+</form>
+</div>
+<span></span>
+<div class="buttons">
+  <div class="container">
+    <div class="bottom"></div>
+    <div class="cover cut"></div>
+    <div class="text-container">
+    <div class="text text-dark">Submit</div>
+  </div>
+  <div class="text-container cut">
+    <div class="text">Submit</div>
+   </div>
+    <div class="overlay"></div>
+  </div>
+
+ <script>
+        function record() {
+            var recognition = new webkitSpeechRecognition();
+            recognition.lang = "en-GB";
+
+            recognition.onresult = function(event) {
+                // console.log(event);
+                document.getElementById('speechToText').value = event.results[0][0].transcript;
+            }
+            recognition.start();
+            speechRecognition.continuous = true;
+        }
+    </script>
+</div>
+
+
+
+
+</body>
+</html>
